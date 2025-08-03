@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+<style>
+.panel {
+  margin-right:0;
+  margin-left:-20px;
+}
+</style>
+<script>
+const dynamicUpdate="Checkered Flag";
+</script>
+{% include "head.html" %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>F1 Race Results Overlay</title>
+  <style>
+    body {
+      background: #111;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      color: white;
+      overflow: hidden;
+    }
+
+    /* Results Panel */
+    .results-panel {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      width: 340px;
+      background: rgba(0,0,0,0.85);
+      border-left: 6px solid #e10600; /* F1 Red Accent */
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.7);
+      overflow: hidden;
+    }
+
+    .results-header {
+      padding: 10px 14px;
+      font-size: 20px;
+      font-weight: bold;
+      background: #e10600;
+      text-transform: uppercase;
+    }
+
+    /* Driver Rows */
+    .result-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      animation: fadeIn 0.4s ease forwards;
+      opacity: 0;
+    }
+
+    /* Position */
+    .position {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffd700;
+      width: 28px;
+    }
+
+    /* Driver Info */
+    .driver-info {
+      flex: 1;
+      margin-left: 8px;
+    }
+
+    .driver-name {
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 16px;
+    }
+
+    .team {
+      font-size: 12px;
+      color: #bbb;
+    }
+
+    /* Gap/Status */
+    .gap {
+      font-size: 14px;
+      color: #ccc;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="results-panel">
+    <div class="results-header">Race Results</div>
+    <div id="results">
+      <div id="result-row">
+          <div class="position">1</div>
+          <div class="driver-info">
+            <div class="driver-name" name="Drivers_0_LastName"></div>
+            <div class="team" name="Drivers_0_FirstName"></div>
+            <div class="team" name="Drivers_0_LastName"></div>
+          </div>
+         <img name="Drivers_0_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img>
+          <div class="gap" name="Drivers_0_TimeBehindLeaderOverall"></div>
+      </div>
+      <div id="result-row">
+          <div class="position">2</div>
+          <div class="driver-info">
+            <div class="driver-name" name="Drivers_1_LastName"></div>
+            <div class="team" name="Drivers_1_FirstName"></div>
+            <div class="team" name="Drivers_1_LastName"></div>
+          </div>
+         <img name="Drivers_1_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img>
+          <div class="gap" name="Drivers_1_TimeBehindLeaderOverall"></div>
+      </div>
+      <div id="result-row">
+          <div class="position">3</div>
+          <div class="driver-info">
+            <div class="driver-name" name="Drivers_2_LastName"></div>
+            <div class="team" name="Drivers_2_FirstName"></div>
+            <div class="team" name="Drivers_2_LastName"></div>
+          </div>
+         <img name="Drivers_2_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img>
+          <div class="gap" name="Drivers_2_TimeBehindLeaderOverall"></div>
+      </div>
+      <div id="result-row">
+          <div class="position">4</div>
+          <div class="driver-info">
+            <div class="driver-name" name="Drivers_3_LastName"></div>
+            <div class="team" name="Drivers_3_FirstName"></div>
+            <div class="team" name="Drivers_3_LastName"></div>
+          </div>
+         <img name="Drivers_3_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img>
+          <div class="gap" name="Drivers_3_TimeBehindLeaderOverall"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

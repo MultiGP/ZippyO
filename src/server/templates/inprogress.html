@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<script>
+const dynamicUpdate="Green Flag";
+</script>
+{% include "head.html" %}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>F1 Leaderboard Overlay</title>
+  <style>
+    body {
+      background: #111;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      overflow: hidden;
+      color: white;
+    }
+
+    /* Leaderboard Container */
+    .leaderboard {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-left: 6px solid #e10600; /* F1 Red */
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
+      width: 280px;
+    }
+
+    /* Individual Driver Row */
+    .driver-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 16px;
+      animation: slideIn 0.4s ease-out;
+    }
+
+    /* Position Number */
+    .position {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffd700;
+      width: 28px;
+    }
+
+    /* Driver Name */
+    .driver {
+      font-weight: bold;
+      text-transform: uppercase;
+      flex: 1;
+      margin-left: 6px;
+    }
+
+    /* Tire Types */
+    .tire {
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 8px;
+      text-transform: uppercase;
+    }
+    .soft { background: red; }
+    .medium { background: yellow; color: #111; }
+    .hard { background: white; color: #111; }
+
+    /* Gap Time */
+    .gap {
+      font-size: 14px;
+      color: #ccc;
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* Slide animation for rows */
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="leaderboard" id="leaderboard">
+          <div class="driver-row">
+             <div class="position" name="Drivers_0_PositionOverall"></div>
+             <div class="driver" name="Drivers_0_FirstName"></div>
+             <div class="driver" name="Drivers_0_LastName"></div>
+             <div class="gap" name="Drivers_0_TimeBehindLeaderOverall" ></div>
+          </div>
+          <div class="driver-row">
+             <div class="position" name="Drivers_1_PositionOverall"></div>
+             <div class="driver" name="Drivers_1_FirstName"></div>
+             <div class="driver" name="Drivers_1_LastName"></div>
+             <div class="gap" name="Drivers_1_TimeBehindLeaderOverall" ></div>
+          </div>
+          <div class="driver-row">
+             <div class="position" name="Drivers_2_PositionOverall"></div>
+             <div class="driver" name="Drivers_2_FirstName"></div>
+             <div class="driver" name="Drivers_2_LastName"></div>
+             <div class="gap" name="Drivers_2_TimeBehindLeaderOverall" ></div>
+          </div>
+          <div class="driver-row">
+             <div class="position" name="Drivers_3_PositionOverall"></div>
+             <div class="driver" name="Drivers_3_FirstName"></div>
+             <div class="driver" name="Drivers_3_LastName"></div>
+             <div class="gap" name="Drivers_3_TimeBehindLeaderOverall" ></div>
+          </div>
+  </div>
+</body>
+</html>
+
+

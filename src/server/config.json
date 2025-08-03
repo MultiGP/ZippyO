@@ -1,0 +1,14 @@
+{
+  "SECRETS": {},
+  "GENERAL": {
+    "HTTP_PORT": 5000,
+    "ADMIN_USERNAME": "admin",
+    "ADMIN_PASSWORD": "zippyo",
+    "SECONDARIES": [],
+    "SECONDARY_TIMEOUT": 300,
+    "DEBUG": false,
+    "CORS_ALLOWED_HOSTS": "*",
+    "FILE_PATH": "../../../../../Documents/livetime.json",
+    "LAST_MODIFIED_TIME": 1754190976
+  }
+}

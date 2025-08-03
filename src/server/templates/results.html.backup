@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html>
+<style>
+.panel {
+  margin-right:0;
+  margin-left:-20px;
+}
+</style>
+<script>
+const dynamicUpdate="Checkered Flag";
+</script>
+{% include "head.html" %}
+<body>
+<div class="container-fluid">
+
+Flag Color from data html example (does not dyanamically refresh) {{ data.Race.FlagColor }}
+
+<div name="Race_FlagColor"></div>
+<h2>Results from last race</h2>
+<span style="display: flex;">Position&nbsp; <div name="Drivers_0_PositionOverall"></div>:&nbsp;<div name="Drivers_0_FirstName"></div>&nbsp;<div name="Drivers_0_LastName"></div><img name="Drivers_0_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+<span style="display: flex;">Position&nbsp; <div name="Drivers_1_PositionOverall"></div>:&nbsp; <div name="Drivers_1_FirstName"></div>&nbsp;<div name="Drivers_1_LastName"></div><img name="Drivers_1_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+<span style="display: flex;">Position&nbsp; <div name="Drivers_2_PositionOverall"></div>:&nbsp; <div name="Drivers_2_FirstName"></div>&nbsp;<div name="Drivers_2_LastName"></div><img name="Drivers_2_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+<span style="display: flex;">Position&nbsp; <div name="Drivers_3_PositionOverall"></div>:&nbsp; <div name="Drivers_3_FirstName"></div>&nbsp;<div name="Drivers_3_LastName"></div><img name="Drivers_3_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+
+</div>
+</body>
+</html>
