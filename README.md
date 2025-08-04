@@ -45,41 +45,62 @@ Note: If the above command fails with a message like "error: Microsoft Visual C+
   * On a Linux system the command to use will likely be: ```source .venv/bin/activate```
 
 3. Using the same command prompt, navigate to the ```src/server``` directory.
+4.  Update src/server/config.json FILE_PATH to point to json location that livetime will be sending to
 
 4. Enter: ```python server.py```
 
 5. If the server starts up properly, you should see various log messages, including one like this:
     ```
-    Running http server at port 5000
+    Running http server at port 5001
     ```
 
 1. The server may be stopped by hitting Ctrl-C
 
-<a id="logging"></a>
-## Logging
+**Usage:**
+URL: http://<hostname>:5001
+/      : shows all of the livetime json attributes
+/nextup    : Page modifies on purple flag to show the race before it starts. Shows the pilots in the race
+/inprogress    :Page modifes on green flag, shows running order of pilots, and behind next
+/results       :Page shows the race finish order
+(more to come)
 
-The ZippyO server generates "log" messages containing information about its operations. Below is a sample configuration for logging:
-
+Example:
 ```
-    "LOGGING": {
-        "CONSOLE_LEVEL": "INFO",
-        "SYSLOG_LEVEL": "NONE",
-        "FILELOG_LEVEL": "INFO",
-        "FILELOG_NUM_KEEP": 30,
-        "CONSOLE_STREAM": "stdout"
-    }
+http://127.0.0.1:5001/
 ```
-The following log levels may be specified:  DEBUG, INFO, WARNING, WARN, ERROR, FATAL, CRITICAL, NONE
 
-If the FILELOG_LEVEL value is not NONE then the server will generate log files in the `src/server/logs` directory. A new log file is created each time the server starts, with each file having a unique name based on the current date and time (i.e., "rh_20200621_181239.log"). Setting FILELOG_LEVEL to DEBUG will result in more detailed log messages being stored in the log file, which can be useful when debugging problems.
+**Development**
+Example: 
+```
+ <body>
+<div class="container-fluid">
+<div name="Race_FlagColor"></div>
+<h2>Next Up</h2>
+<span style="display: flex;">Driver 1:&nbsp; <div name="Drivers_0_FirstName"></div>&nbsp;<div name="Drivers_0_LastName"></div><img name="Drivers_0_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+<span style="display: flex;">Driver 2:&nbsp; <div name="Drivers_1_FirstName"></div>&nbsp;<div name="Drivers_1_LastName"></div><img name="Drivers_1_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+<span style="display: flex;">Driver 3:&nbsp; <div name="Drivers_2_FirstName"></div>&nbsp;<div name="Drivers_2_LastName"></div><img name="Drivers_2_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
+<span style="display: flex;">Driver 4:&nbsp; <div name="Drivers_3_FirstName"></div>&nbsp;<div name="Drivers_3_LastName"></div><img name="Drivers_3_DriverLID" width="50" height="50" templatesrc="./static/image/imageREPLACEME.png" ></img></span>
 
-The FILELOG_NUM_KEEP value is the number of log files to keep; the rest will be deleted (oldest first).
+</div>
+</body>
+```
 
-The CONSOLE_STREAM value may be "stdout" or "stderr".
+Some examples above: elements like Drivers_0_FirstName are keys found in the livetime.json file.  these <div> elements with that name will display the values of those keys.
 
-If the SYSLOG_LEVEL value is not NONE then the server will send log messages to the logging utility built into the host operating system.
+In the case of <img> the value of the Key will be dynamically substitued into the "REPLACEME" portion of the url for the image locations.. 
 
-<br/>
+It is also possible to access the json data when the HTML is being rendered, though typical python templating in your html file.
+However, be aware this will only be evaluated as the html page is being generated/loaded, and not dynamically while the pae is open
+```
+{{ data.Race.FlagColor }}
+```
+
+To only do dynamic updates for certain Flags, (Purple, Green, Checkered). add this to the top of your html
+```
+<script>
+const dynamicUpdate="Green Flag";
+</script>
+```
 
 ----------------------------------------------------------------------------
 
