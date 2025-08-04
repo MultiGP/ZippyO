@@ -58,11 +58,12 @@ Note: If the above command fails with a message like "error: Microsoft Visual C+
 
 **Usage:**
 URL: http://<hostname>:5001
-/      : shows all of the livetime json attributes
-/nextup    : Page modifies on purple flag to show the race before it starts. Shows the pilots in the race
-/inprogress    :Page modifes on green flag, shows running order of pilots, and behind next
-/results       :Page shows the race finish order
-(more to come)
+<br/>
+/      : shows all of the livetime json attributes <br/>
+/nextup    : Page modifies on purple flag to show the race before it starts. Shows the pilots in the race<br/>
+/inprogress    :Page modifes on green flag, shows running order of pilots, and behind next<br/>
+/results       :Page shows the race finish order<br/>
+(more to come)<br/>
 
 Example:
 ```
@@ -85,12 +86,12 @@ Example:
 </body>
 ```
 
-Some examples above: elements like Drivers_0_FirstName are keys found in the livetime.json file.  these <div> elements with that name will display the values of those keys.
+Some examples above: elements like Drivers_0_FirstName are keys found in the livetime.json file.  these <div> elements with that name will display the values of those keys.<br/>
 
-In the case of <img> the value of the Key will be dynamically substitued into the "REPLACEME" portion of the url for the image locations.. 
+In the case of <img> the value of the Key will be dynamically substitued into the "REPLACEME" portion of the url for the image locations.. <br/>
 
-It is also possible to access the json data when the HTML is being rendered, though typical python templating in your html file.
-However, be aware this will only be evaluated as the html page is being generated/loaded, and not dynamically while the pae is open
+It is also possible to access the json data when the HTML is being rendered, though typical python templating in your html file.<br/>
+However, be aware this will only be evaluated as the html page is being generated/loaded, and not dynamically while the page is open.<br/>
 ```
 {{ data.Race.FlagColor }}
 ```
