@@ -3,6 +3,7 @@
         get_timestamp = undefined;
         get_settings = undefined;
         reset = undefined;
+        object_count = undefined;
 
         $(document).ready(function() {
             var buzzer = $('#buzzer')[0];
@@ -58,6 +59,10 @@ function traverseJson(obj, parentKey = '') {
                 //$('#bigjson').text(text);
                 const jsonObject = JSON.parse(text);
                 if (typeof dynamicUpdate === 'undefined' || jsonObject.Race.FlagColor == dynamicUpdate){
+                   if (object_count !== undefined && object_count != jsonObject.Drivers.length) {
+                      document.location.reload();
+                   }
+                   object_count = jsonObject.Drivers.length;
                    traverseJson(jsonObject);
                 }
             }

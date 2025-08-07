@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Double Elimination Bracket (F1 Style)</title>
+<style>
+  body {
+    font-family: 'Formula1 Display', 'Arial Black', sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+    padding: 10px;
+    margin: 0;
+  }
+
+  h1 {
+    text-align: center;
+    color: #e10600;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e10600;
+    display: inline-block;
+    padding-bottom: 4px;
+  }
+
+  .bracket-container {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .bracket-section {
+    width: 100%;
+    text-align: center;
+  }
+
+  .bracket-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #f2f2f2;
+    border-left: 5px solid #e10600;
+    padding-left: 8px;
+    text-transform: uppercase;
+    text-align: left;
+    display: inline-block;
+  }
+
+  .bracket {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+
+  .round {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .group {
+    background: linear-gradient(145deg, #1c1c1c, #101010);
+    border: 1px solid #333;
+    border-left: 4px solid #e10600;
+    border-radius: 5px;
+    padding: 8px 10px;
+    width: 180px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(255,0,0,0.3);
+  }
+
+  .group h3 {
+    font-size: 0.7rem;
+    color: #f7f7f7;
+    margin: 0 0 6px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 3px;
+  }
+
+  .player {
+    background: #1a1a1a;
+    margin: 3px 0;
+    padding: 4px;
+    border-left: 3px solid #e10600;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .player span {
+    font-size: 0.7rem;
+    color: #bbb;
+  }
+
+  .finals {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .match {
+    display: inline-block;
+    background: linear-gradient(145deg, #1c1c1c, #101010);
+    border: 1px solid #444;
+    border-left: 5px solid #ffd700;
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 0.9rem;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  }
+</style>
+</head>
+<body>
+
+<h1>Double Elimination Bracket</h1>
+
+<div class="bracket-container">
+
+  <!-- Winner's Bracket -->
+  <div class="bracket-section">
+    <div class="bracket-title">Winner's Bracket</div>
+    <div class="bracket">
+      <!-- Round 1 -->
+      <div class="round">
+        <div class="group">
+          <h3>{{ bracket.winners[0].match_id }}</h3>
+          <div class="player">Player 1 <span>#01</span></div>
+          <div class="player">Player 2 <span>#02</span></div>
+          <div class="player">Player 3 <span>#03</span></div>
+          <div class="player">Player 4 <span>#04</span></div>
+        </div>
+        <div class="group">
+          <h3>Heat 2</h3>
+          <div class="player">Player 5 <span>#05</span></div>
+          <div class="player">Player 6 <span>#06</span></div>
+          <div class="player">Player 7 <span>#07</span></div>
+          <div class="player">Player 8 <span>#08</span></div>
+        </div>
+        <div class="group">
+          <h3>Heat 3</h3>
+          <div class="player">Player 9 <span>#09</span></div>
+          <div class="player">Player 10 <span>#10</span></div>
+          <div class="player">Player 11 <span>#11</span></div>
+          <div class="player">Player 12 <span>#12</span></div>
+        </div>
+        <div class="group">
+          <h3>Group 4</h3>
+          <div class="player">Player 13 <span>#13</span></div>
+          <div class="player">Player 14 <span>#14</span></div>
+          <div class="player">Player 15 <span>#15</span></div>
+          <div class="player">Player 16 <span>#16</span></div>
+        </div>
+      </div>
+      <!-- Round 2 -->
+      <div class="round">
+        <div class="group">
+          <h3>Winners G1+G2</h3>
+          <div class="player">Winner G1 #1</div>
+          <div class="player">Winner G1 #2</div>
+          <div class="player">Winner G2 #1</div>
+          <div class="player">Winner G2 #2</div>
+        </div>
+        <div class="group">
+          <h3>Winners G3+G4</h3>
+          <div class="player">Winner G3 #1</div>
+          <div class="player">Winner G3 #2</div>
+          <div class="player">Winner G4 #1</div>
+          <div class="player">Winner G4 #2</div>
+        </div>
+      </div>
+      <!-- Round 3 -->
+      <div class="round">
+        <div class="group">
+          <h3>Winners Final</h3>
+          <div class="player">Winner R2 #1</div>
+          <div class="player">Winner R2 #2</div>
+          <div class="player">Winner R2 #3</div>
+          <div class="player">Winner R2 #4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loser's Bracket -->
+  <div class="bracket-section">
+    <div class="bracket-title">Loser's Bracket</div>
+    <div class="bracket">
+      <!-- Loser Round 1 -->
+      <div class="round">
+        <div class="group">
+          <h3>Losers G1+G2</h3>
+          <div class="player">Loser G1 #3</div>
+          <div class="player">Loser G1 #4</div>
+          <div class="player">Loser G2 #3</div>
+          <div class="player">Loser G2 #4</div>
+        </div>
+        <div class="group">
+          <h3>Losers G3+G4</h3>
+          <div class="player">Loser G3 #3</div>
+          <div class="player">Loser G3 #4</div>
+          <div class="player">Loser G4 #3</div>
+          <div class="player">Loser G4 #4</div>
+        </div>
+      </div>
+      <!-- Loser Round 2 -->
+      <div class="round">
+        <div class="group">
+          <h3>Losers Round 2</h3>
+          <div class="player">Winner L1 #1</div>
+          <div class="player">Winner L1 #2</div>
+          <div class="player">Winner L1 #3</div>
+          <div class="player">Winner L1 #4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finals -->
+  <div class="finals">
+    <div class="bracket-title">Grand Final</div>
+    <div class="match">Winner's Champ vs Loser's Champ</div>
+  </div>
+</div>
+
+</body>
+</html>
+
