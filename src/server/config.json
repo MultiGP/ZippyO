@@ -10,6 +10,6 @@
     "CORS_ALLOWED_HOSTS": "*",
     "FILE_PATH": "../../../../../Documents/livetime.json",
     "BRACKET_PATH": "../../../../../Documents/bracket.json",
-    "LAST_MODIFIED_TIME": 1754543929
+    "LAST_MODIFIED_TIME": 1754662780
   }
 }

@@ -13,10 +13,11 @@ const dynamicUpdate="Purple Flag";
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>F1 Grid Starting Order</title>
-  <style>
+  <title>Next Up</title>
+ 
+ <style>
     body {
-      background: #111;
+      background: transparent;
       font-family: 'Arial', sans-serif;
       color: white;
       margin: 0;
@@ -24,106 +25,415 @@ const dynamicUpdate="Purple Flag";
     }
 
     /* Overlay container */
-    .grid-container {
-      position: absolute;
-      top: 50px;
-      left: 25%;
-      transform: translateX(-25%);
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 12px 40px;
-      max-width: 700px;
+   .grid-container {
+    position: relative;
+    display: flex;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px 40px;
+    justify-content: center;
+}
+
+/* HENRY CODE */
+
+*/TOP SECTION TITLES */
+
+.nextup-titles {
+text-align:centeR;
+}
+
+.upnext {
+    display: flex;
+    width: 425px;
+    transform: skew(-10deg);
+    overflow: hidden;
+    padding: 0px 10px 5px 10px;
+    place-content: center;
+    place-self: center;
+}
+.upnext-column:first-child {
+    background-color: #e10500;
+    color: white;
+}
+.upnext-column:last-child {
+    background-color: transparent;
+    color: black;
+    
+      border: 7px solid #e10500;
+}
+.upnext-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    font-family: fantasy;
+    font-size: 48px;
+    font-weight: 200;
+text-transform:uppercase;
+    padding: 10px;
+    transform: skew(353deg);
+}
+.race-number {
+    display: block;
+}
+.race-number {
+    background-size: cover;
+    color: #f1f1f1;
+    -moz-background-clip: text;
+    -webkit-background-clip: text;
+    text-transform: uppercase;
+    font-size: 48px;
+    margin: 10px 0;
+    font-family: fantasy;
+    font-weight: 200;
+    color: #e10500;
+}
+.round-type-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px 42px 0px;
+    font-size: 22px;
+}
+.round-type {
+  display: inline-block;
+  opacity: 0;
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.round-type {
+    display: inline-block;
+    opacity: 0;
+    font-family: fantasy;
+    font-weight: 200;
+    border: 2px solid red;
+    transform: skewX(-8deg) !important;
+}
+
+.round-type  > * {
+  transform: skewX(8deg); /* correzione testo */
+}
+
+.preliminary {
+    background: linear-gradient(90deg, #00f5ff, #00acdf);
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 6px 18px;
+    display: inline-block;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transform: skewX(-8deg);
+    text-transform: uppercase;
+}
+
+.redemption {
+    color: #FFC107;
+    padding: 6px 18px;
+    display: inline-block;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transform: skewX(-8deg);
+    text-transform: uppercase;
+    border-color: #e6b711;
+
+}
+.winner {
+ background: linear-gradient(90deg, #00a000, #007d00);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 6px 18px;
+  display: inline-block;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transform: skewX(-8deg);
+  text-transform: uppercase;
+
+}
+
+
+/* PILOT CARDS */
+.pilot-card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pilot-card {
+    display: flex;
+    align-items: stretch;
+    height: 66px;
+    width: fit-content;
+    position: relative;
+    /* background: linear-gradient(to right, #efefef, #ddd); */
+    border-radius: 6px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    min-width: 298px;
+    align-self: end;
+    padding: 0px 0px 0px 3px;
+    margin-top: -1px;
+}
+    /* LEFT SECTION: Flag in skewed box require dynamic code for  the background image depending on the LIVETIME PILOT DATA*/
+.flag-box {
+    width: 90px;
+    /* background: white; */
+    /* clip-path: polygon(0 0, 100% 10%, 100% 90%, 0% 100%); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg);
+    background-size: cover;
+    transform: skew(-8deg, 0deg);
+    background-repeat: no-repeat;
+    background-position-x: center;
+}
+
+    .flag-box img {
+      width: 60%;
     }
 
-    /* Grid Item (Driver Row) */
-    .grid-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(90deg, #000 0%, #222 100%);
-      border-left: 6px solid #e10600; /* F1 red accent */
-      padding: 8px 14px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
-      animation: fadeInUp 0.5s ease forwards;
-      opacity: 0;
-    }
-
-    /* Position Number */
-    .position {
-      font-size: 22px;
-      font-weight: bold;
-      color: #ffd700;
-      width: 30px;
-    }
-
-    /* Driver Details */
-    .driver-info {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      margin-left: 10px;
-    }
-
-    .driver-name {
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 18px;
+    /* MIDDLE SECTION: Text content */
+.text-box {
+    padding: 33px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    z-index: 3;
+    position: relative;
+    background: linear-gradient(177deg, black, #716f6fab);
+    color: white;
+    text-align: center;
+    margin-left: -19px;
+}
+  .name {
+        font-size: 22px;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 5px;
     }
 
     .team {
-      font-size: 12px;
-      color: #ccc;
+      background: linear-gradient(to bottom, #d22, #a00);
+      color: white;
+      font-weight: bold;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 3px;
+      font-size: 14px;
+      margin-bottom: 8px;
     }
 
-    /* Fade-in animation for each grid item */
-    @keyframes fadeInUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .time {
+      font-size: 15px;
+      color: #444;
     }
+
+    /* RIGHT SECTION: Photo */
+.photo-box {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border-left: 4px solid #888; */
+    margin-bottom: -65px;
+    /* margin-left: 65px; */
+    background: linear-gradient(0deg, black, #131313b3);
+    border-radius: 8px;
+    border-left: 5px solid #ff0c01;
+}
+
+   .photo-box img {
+    width: 200px;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+ .pilot-card-container {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: fadeInLeft 0.6s ease forwards;
+  }
+
+  .animated-card:nth-child(1) {
+    animation-delay: 1s;
+  }
+  .animated-card:nth-child(2) {
+    animation-delay: 1.3s;
+  }
+  .animated-card:nth-child(3) {
+    animation-delay: 1.6s;
+  }
+  .animated-card:nth-child(4) {
+    animation-delay: 1.9s;
+  }
+
+  @keyframes fadeInLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+ .upnext-column {
+    /* inizialmente invisibili, ma con opacità impostata nel keyframe finale */
+    animation-duration: 1.2s;
+    animation-fill-mode: both; /* <- questo è importante */
+    will-change: transform, opacity;
+  }
+
+  .from-left {
+    animation-name: crashInLeft;
+    opacity: 0;
+  }
+
+  .from-right {
+    animation-name: crashInRight;
+    opacity: 0;
+  }
+
+  @keyframes crashInLeft {
+    0% {
+      transform: translateX(-150%);
+      opacity: 0;
+    }
+    60% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateX(-10px);
+    }
+    80% {
+      transform: translateX(7px);
+    }
+    90% {
+      transform: translateX(-4px);
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes crashInRight {
+    0% {
+      transform: translateX(150%);
+      opacity: 0;
+    }
+    60% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateX(10px);
+    }
+    80% {
+      transform: translateX(-7px);
+    }
+    90% {
+      transform: translateX(4px);
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
   </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const raceElement = document.querySelector(".race-number");
+  const roundTypeElement = document.querySelector(".round-type");
+
+  if (raceElement && roundTypeElement) {
+    const raceText = raceElement.textContent.trim();
+    const match = raceText.match(/RACE\s*(\d+)/i);
+    if (match) {
+      const raceNumber = parseInt(match[1]);
+
+      let label = "";
+      let className = "";
+
+      if ([1, 2, 3, 4].includes(raceNumber)) {
+        label = "PRELIMINARY ROUND";
+        className = "preliminary";
+      } else if ([5, 7, 9, 10, 12].includes(raceNumber)) {
+        label = "REDEMPTION BRACKET";
+        className = "redemption";
+      } else if ([6, 8].includes(raceNumber)) {
+        label = "WINNER BRACKET";
+        className = "winner";
+      } else if (raceNumber === 11) {
+        label = "WINNER BRACKET SEMIFINAL";
+        className = "winner";
+      } else if (raceNumber === 13) {
+        label = "REDEMPTION BRACKET SEMI FINAL";
+        className = "redemption";
+      }
+
+      // Applica testo e classe colore
+      roundTypeElement.textContent = label;
+      roundTypeElement.classList.add(className);
+
+      // 💥 Forza il ricalcolo stile e trigger animazione manuale
+      roundTypeElement.style.animation = "none";
+      void roundTypeElement.offsetWidth; // trigger reflow
+      roundTypeElement.style.animation = "zoomIn 0.5s ease-out 2s forwards";
+    }
+  }
+});
+</script>
+
 </head>
+
 <body>
-  <h2>Next Up</h2>
-  <div class="grid-container" id="grid">
-  <div class="grid-item" >
-          <div class="position">1</div>
-          <div class="driver-info">
-             <div class="driver-name" name="Drivers_0_LastName"></div>
-             <div class="team" name="Drivers_0_FirstName"></div>
-             <div class="team" name="Drivers_0_LastName"></div>
-          </div>
-         <img name="Drivers_0_DriverLID" width="100" height="100" templatesrc="./static/image/imageREPLACEME.png" ></img>
+<div class="upnext">
+        <div class="upnext-column from-left">
+        NEXT UP
+        </div>
+        <div class="upnext-column from-right">
+          <span class="race-number">RACE {{ data.Race.OrderNumber }} </span> <br>
+        </div>
+    </div>
+<div class="round-type-container">
+<div class="round-type">test</div>
+</div>
+
+<div class="grid-container">
+{% for driver in data.Drivers %}
+<div class="pilot-card-container animated-card">
+  <div class="photo-box">
+    <img src="./static/image/image{{ driver.DriverLID }}.png" alt="Pilot" />
   </div>
-  <div class="grid-item" >
-          <div class="position">2</div>
-          <div class="driver-info">
-             <div class="driver-name" name="Drivers_1_LastName"></div>
-             <div class="team" name="Drivers_1_FirstName"></div>
-             <div class="team" name="Drivers_1_LastName"></div>
-          </div>
-         <img name="Drivers_1_DriverLID" width="100" height="100" templatesrc="./static/image/imageREPLACEME.png" ></img>
-  </div>
-  <div class="grid-item" >
-          <div class="position">3</div>
-          <div class="driver-info">
-             <div class="driver-name" name="Drivers_2_LastName"></div>
-             <div class="team" name="Drivers_2_FirstName"></div>
-             <div class="team" name="Drivers_2_LastName"></div>
-          </div>
-         <img name="Drivers_2_DriverLID" width="100" height="100" templatesrc="./static/image/imageREPLACEME.png" ></img>
-  </div>
-  <div class="grid-item" >
-          <div class="position">4</div>
-          <div class="driver-info">
-             <div class="driver-name" name="Drivers_3_LastName"></div>
-             <div class="team" name="Drivers_3_FirstName"></div>
-             <div class="team" name="Drivers_3_LastName"></div>
-          </div>
-         <img name="Drivers_3_DriverLID" width="100" height="100" templatesrc="./static/image/imageREPLACEME.png" ></img>
-  </div>
-  </div>
+<div class="pilot-card">
+  <div class="flag-box">
+      </div>
+  <div class="text-box">
+    <div class="name">{{ driver.FirstName }} {{ driver.LastName }}</div>
+     			</div>
+		</div>
+	</div>
+{% endfor %}
+
+
+</div>
 
 </body>
 </html>
-

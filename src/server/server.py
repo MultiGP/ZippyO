@@ -8,6 +8,7 @@ gevent.monkey.patch_all()
 import json
 import math
 import Config
+import traceback
 from json2html import *     
 import re
 
@@ -24,6 +25,7 @@ parser.add_argument('--mock', dest='mock', action='store_true', default=False, h
 args = parser.parse_args()
 ConfigContext = ConfigContext.ConfigContext()
 
+
 print (sys.platform.lower())
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
@@ -33,10 +35,9 @@ async_mode = "gevent"
 
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = 'secret!'
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins='*')
 heartbeat_thread = None
-
-workingBracketRounds={}
 
 
 zippyo_version = {'major': 0, 'minor': 1}
@@ -148,7 +149,7 @@ def bracket():
     with open(file_path, "r") as file:
         data = json.load(file)  # Load the file content into a Python object
     file.close()
-    return render_template('bracket.html',async_mode=socketio.async_mode,bracket=bracket_json)
+    return render_template('bracket.html',async_mode=socketio.async_mode,bracket=bracket_json )
 
 @socketio.on('connect')
 def connect_handler():
@@ -176,12 +177,14 @@ def heartbeat_thread_function():
             gevent.sleep(1)
         except Exception as e: 
             gevent.sleep(1)
-            print ("exception",e)            
+            error_msg = traceback.format_exc()
+            print(f"Caught an exception: {e}")
+            print(f"Detailed traceback:\n{error_msg}")
 
 def check_for_bracket_change(data):
     race_info = data["Race"]["Information"]
     if "Bracket" in race_info:
-        if "Checkered" in data["Race"]["FlagColor"]:
+        if "Checkered" in data["Race"]["FlagColor"] :
             finish_order = []
             for driver in data["Drivers"]:
                 finish_order.append({"pilot_id":int(driver["LastName"])})
@@ -190,6 +193,18 @@ def check_for_bracket_change(data):
             after = json.dumps(bracket_json)
             if (before != after):
                 print ("bracket changed")
+                 
+                socketio.emit('bracket_change', bracket_json)
+                save_bracket_data()
+
+        if "Green" in data["Race"]["FlagColor"] :
+            match = find_match_by_id(bracket_json, race_info)
+            before = json.dumps(bracket_json)
+            bracket_json["current_bracket_race"] = match["race"]
+            bracket_json["last_races_changed"] = []
+            after = json.dumps(bracket_json)
+            if (before != after):
+                print ("bracket changed flags")
                 socketio.emit('bracket_change', bracket_json)
                 save_bracket_data()
     
@@ -198,6 +213,8 @@ def create_double_elim_4p_bracket(pilots):
     #    raise ValueError("This bracket requires exactly 16 pilots.")
 
     bracket = {
+        "current_bracket_race": "",
+        "last_races_changed": [],
         "winners": [],
         "losers": [],
     }
@@ -207,7 +224,7 @@ def create_double_elim_4p_bracket(pilots):
     winners_round1 = [
         {
             
-            "round" : 1,
+            "race" : 1,
             "match_id": "Bracket Winners 1 - 1",
             "pilots": [pilots[2], pilots[5],pilots[10], pilots[13]],
             "advance_to": "Bracket Winners 2 - 1",
@@ -218,7 +235,7 @@ def create_double_elim_4p_bracket(pilots):
             "drop": []
         },
         {
-            "round" : 2,
+            "race" : 2,
             "match_id": "Bracket Winners 1 - 2",
             "pilots": [pilots[1], pilots[6],pilots[4], pilots[15]],
             "advance_to": "Bracket Winners 2 - 1",
@@ -229,7 +246,7 @@ def create_double_elim_4p_bracket(pilots):
             "drop": []
         },
         {
-            "round" : 3,
+            "race" : 3,
             "match_id": "Bracket Winners 1 - 3",
             "pilots": [pilots[3], pilots[4],pilots[11], pilots[12]],
             "advance_to": "Bracket Winners 2 - 2",
@@ -240,7 +257,7 @@ def create_double_elim_4p_bracket(pilots):
             "drop": []
         },
         {
-            "round" : 4,
+            "race" : 4,
             "match_id": "Bracket Winners 1 - 4",
             "pilots": [pilots[0], pilots[7],pilots[8], pilots[15]],
             "advance_to": "Bracket Winners 2 - 2",
@@ -256,7 +273,7 @@ def create_double_elim_4p_bracket(pilots):
     # Round 2: 8 advancing pilots -> 2 matches of 4
     winners_round2 = [
         {
-            "round" : 6,
+            "race" : 6,
             "match_id": "Bracket Winners 2 - 1",
             "pilots": [None]*4,
             "advance_to": "Bracket Winners 3 - 1",
@@ -267,7 +284,7 @@ def create_double_elim_4p_bracket(pilots):
             "drop": []
         },
         {
-            "round" : 8,
+            "race" : 8,
             "match_id": "Bracket Winners 2 - 2}",
             "pilots": [None]*4,
             "advance_to": "Bracket Winners 3 - 1",
@@ -283,7 +300,7 @@ def create_double_elim_4p_bracket(pilots):
     # Round 3 (Bracket Winners Final): 4 advancing pilots -> 1 match of 4
     winners_final = [
         {
-            "round" : 11,
+            "race" : 11,
             "match_id": "Bracket Winners 3 - 1",
             "pilots": [None]*4,
             "advance_to": "Bracket Winners 4 - 1",
@@ -298,7 +315,7 @@ def create_double_elim_4p_bracket(pilots):
 
     winners_final = [
         {
-            "round" : 14,
+            "race" : 14,
             "match_id": "Bracket Winners 4 - 1",
             "pilots": [None]*4,
             "advance": [],
@@ -310,7 +327,7 @@ def create_double_elim_4p_bracket(pilots):
     # Bracket Losers Round 1: 8 pilots dropped from Bracket Winners  -> 2 matches of 4
     losers_round1 = [
         {
-            "round" : 5,
+            "race" : 5,
             "match_id": "Bracket Losers  1 - 1",
             "pilots": [None]*4,
             "advance_to": "Bracket Losers 2 - 1",
@@ -319,7 +336,7 @@ def create_double_elim_4p_bracket(pilots):
             "eliminate": []
         },
         {
-            "round" : 7,
+            "race" : 7,
             "match_id": "Bracket Losers 1 - 2",
             "pilots": [None]*4,
             "advance_to": "Bracket Losers 2 - 2",
@@ -333,7 +350,7 @@ def create_double_elim_4p_bracket(pilots):
     # Bracket Losers Round 2: 4 from Bracket Losers  + 4 dropped from Bracket Winners 2 -> 2 matches of 4
     losers_round2 = [
         {
-            "round" : 9,
+            "race" : 9,
             "match_id": "Bracket Losers 2 - 1",
             "pilots": [None]*4,
             "advance_to": "Bracket Losers 3 - 1",
@@ -342,7 +359,7 @@ def create_double_elim_4p_bracket(pilots):
             "eliminate": []
         },
         {
-            "round" : 10,
+            "race" : 10,
             "match_id": "Bracket Losers 2 - 2",
             "pilots": [None]*4,
             "advance_to": "Bracket Losers 3 - 1",
@@ -355,7 +372,7 @@ def create_double_elim_4p_bracket(pilots):
 
     losers_final = [
          {
-            "round" : 12,
+            "race" : 12,
             "match_id": "Bracket Losers 3 - 1",
             "pilots": [None]*4,
             "advance_to": "Bracket Losers 4 - 1",
@@ -368,7 +385,7 @@ def create_double_elim_4p_bracket(pilots):
 
     losers_final = [
         {
-            "round" : 13,
+            "race" : 13,
             "match_id": "Bracket Losers 4 - 1",
             "pilots": [None]*4,
             "advance_to": "Bracket Winners 4 - 1",
@@ -412,30 +429,48 @@ def update_match(bracket, match_id, placements):
                     pass 
                 break
 
-    top_two = finalplacements[:2]
-    bottom_two = finalplacements[2:]
+    last_races_changed = []
+    top_two = []
+    bottom_two = []
+    if len(finalplacements) > 0:
+       top_two.append(finalplacements[0]) 
+    if len(finalplacements) > 1:
+       top_two.append(finalplacements[1])
+    if len(finalplacements) > 2:
+       bottom_two.append(finalplacements[2])
+    if len(finalplacements) > 3:
+       bottom_two.append(finalplacements[3]) 
     
     # Advance winners
     if "advance_to" in match:
         match["advance"] = []
         match["advance"].extend(top_two)
         next_match = find_match_by_id(bracket, match["advance_to"])
-        next_match["pilots"][match["advance_to_seats"][0]-1] = top_two[0]
-        next_match["pilots"][match["advance_to_seats"][1]-1] = top_two[1]
+        if len(finalplacements) > 0:
+            next_match["pilots"][match["advance_to_seats"][0]-1] = top_two[0]
+        if len(finalplacements) > 1:
+            next_match["pilots"][match["advance_to_seats"][1]-1] = top_two[1]
+        last_races_changed.append(next_match["race"])
 
     # Drop losers
     if "drop_to" in match:
         match["drop"] = []
         match["drop"].extend(bottom_two)
         drop_match = find_match_by_id(bracket, match["drop_to"])
-        drop_match["pilots"][match["drop_to_seats"][0]-1] = bottom_two[0]
-        drop_match["pilots"][match["drop_to_seats"][1]-1] = bottom_two[1]
+        if len(finalplacements) > 2:
+            drop_match["pilots"][match["drop_to_seats"][0]-1] = bottom_two[0]
+        if len(finalplacements) > 3:
+            drop_match["pilots"][match["drop_to_seats"][1]-1] = bottom_two[1]
+        last_races_changed.append(next_match["race"])
     else:
         # If no drop_to, they are eliminated
         if "eliminate" in match:
             match["eliminate"] = []
             match["eliminate"].extend(bottom_two)
 
+
+    bracket["last_races_changed"] = last_races_changed
+    bracket["current_bracket_race"] = match["race"] 
 
 
 pilots = [

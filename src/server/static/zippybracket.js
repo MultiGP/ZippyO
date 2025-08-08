@@ -1,5 +1,5 @@
 
-        $(document).ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
             socket.on('bracket_change', function(msg) {
                 console.log("hello");

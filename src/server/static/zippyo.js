@@ -3,6 +3,7 @@
         get_timestamp = undefined;
         get_settings = undefined;
         reset = undefined;
+        race_number = undefined;
         object_count = undefined;
 
         $(document).ready(function() {
@@ -59,10 +60,11 @@ function traverseJson(obj, parentKey = '') {
                 //$('#bigjson').text(text);
                 const jsonObject = JSON.parse(text);
                 if (typeof dynamicUpdate === 'undefined' || jsonObject.Race.FlagColor == dynamicUpdate){
-                   if (object_count !== undefined && object_count != jsonObject.Drivers.length) {
+                   if ((object_count !== undefined && object_count != jsonObject.Drivers.length) || (race_number !== undefined && race_number != jsonObject.Race.OrderNumber )) {
                       document.location.reload();
                    }
                    object_count = jsonObject.Drivers.length;
+                   race_number = jsonObject.Race.OrderNumber;
                    traverseJson(jsonObject);
                 }
             }

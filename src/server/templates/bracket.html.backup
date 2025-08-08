@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Double Elimination Bracket (F1 Style)</title>
+<title>Double Elimination Bracket </title>
 <style>
   body {
     font-family: 'Formula1 Display', 'Arial Black', sans-serif;
@@ -134,7 +134,7 @@
       <!-- Round 1 -->
       <div class="round">
         <div class="group">
-          <h3>{{ bracket.winners[0].match_id }}</h3>
+          <h3>{{ bracket.winners.round[0].match[0].match_id }}</h3>
           <div class="player">Player 1 <span>#01</span></div>
           <div class="player">Player 2 <span>#02</span></div>
           <div class="player">Player 3 <span>#03</span></div>

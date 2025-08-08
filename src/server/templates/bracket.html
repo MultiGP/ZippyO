@@ -1,121 +1,344 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Double Elimination Bracket</title>
-    <style>
-        body { font-family: sans-serif; background: #f0f0f0; padding: 20px; }
-        h1 { text-align: center; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Double Elimination Bracket </title>
+<style>
+  body {
+    font-family: 'Formula1 Display', 'Arial Black', sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+    padding: 10px;
+    margin: 0;
+  }
 
-        .bracket {
-            display: flex;
-            gap: 40px;
-            overflow-x: auto;
-            padding-bottom: 40px;
-        }
+  h1 {
+    text-align: center;
+    color: #e10600;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e10600;
+    display: inline-block;
+    padding-bottom: 4px;
+  }
 
-        .round {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+  .bracket-container {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
 
-        .match {
-            background: white;
-            border: 1px solid #ccc;
-            padding: 8px 12px;
-            border-radius: 6px;
-            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            width: 180px;
-        }
+  .bracket-section {
+    width: 100%;
+    text-align: center;
+  }
 
-        .match-id {
-            font-weight: bold;
-            margin-bottom: 4px;
-            font-size: 14px;
-            color: #444;
-        }
+  .bracket-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #f2f2f2;
+    border-left: 5px solid #e10600;
+    padding-left: 8px;
+    text-transform: uppercase;
+    text-align: left;
+    display: inline-block;
+  }
 
-        .pilot {
-            font-size: 13px;
-        }
+  .bracket {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
 
-        .advance { color: green; font-weight: bold; }
-        .drop, .eliminate { color: red; font-weight: bold; }
+  .round {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+  }
 
-        .bracket-section {
-            margin-bottom: 60px;
-        }
+  .group {
+    background: linear-gradient(145deg, #1c1c1c, #101010);
+    border: 1px solid #333;
+    border-left: 4px solid #e10600;
+    border-radius: 5px;
+    padding: 8px 10px;
+    width: 180px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(255,0,0,0.3);
+  }
 
-        h2 {
-            border-bottom: 2px solid #aaa;
-            padding-bottom: 4px;
-        }
-    </style>
-    <script type="text/javascript" src="./static/jquery/jquery-3.1.1.min.js"></script>
+  .group h3 {
+    font-size: 0.7rem;
+    color: #f7f7f7;
+    margin: 0 0 6px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 3px;
+  }
+
+  .group-last-race-completed {
+    background: linear-gradient(145deg, red, black);
+    border: 1px solid #333;
+    border-left: 4px solid #e10600;
+    border-radius: 5px;
+    padding: 8px 10px;
+    width: 180px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(255,0,0,0.3);
+  }
+
+  .group-last-race-completed h3 {
+    font-size: 0.7rem;
+    color: #f7f7f7;
+    margin: 0 0 6px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 3px;
+  }
+
+  .player {
+    background: #1a1a1a;
+    margin: 3px 0;
+    padding: 4px;
+    border-left: 3px solid #e10600;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .player span {
+    font-size: 0.7rem;
+    color: #bbb;
+  }
+
+  .finals {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .match {
+    display: inline-block;
+    background: linear-gradient(145deg, #1c1c1c, #101010);
+    border: 1px solid #444;
+    border-left: 5px solid #ffd700;
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 0.9rem;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  }
+</style>
     <script type="text/javascript" src="./static/socket.io/1.3.5/socket.io.min.js"></script>
-    <link rel="stylesheet" href="./static/bootstrap-3.3.7/css/bootstrap.min.css"></link>
-    <script type="text/javascript" src=".//static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./static/zippybracket.js?v=h2"></script>
+    <script type="text/javascript" src="./static/zippybracket.js?v=h3"></script>
 </head>
 <body>
 
-    <h1>Double Elimination Bracket</h1>
+<h1>Double Elimination Bracket</h1>
 
-    <div class="bracket-section">
-        <h2>Winners Bracket</h2>
-        <div class="bracket">
-            {% for round in bracket.winners %}
-                <div class="round">
-                    {% for match in round %}
-                        <div class="match">
-                            <div class="match-id">{{ match.match_id }}</div>
-                            {% for pilot in match.pilots %}
-                                {% if pilot %}
-                                    <div class="pilot">{{ pilot.name }}</div>
-                                {% else %}
-                                    <div class="pilot">TBD</div>
-                                {% endif %}
-                            {% endfor %}
-                            {% if match.advance %}
-                                <div class="advance">↑ {{ match.advance[0].name }} {{ match.advance[1].name }}</div>
-                            {% endif %}
-                            {% if match.drop %}
-                                <div class="drop">↓ {{ match.drop[0].name }} {{ match.drop[1].name}} </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+<div class="bracket-container">
 
-    <div class="bracket-section">
-        <h2>Losers Bracket</h2>
-        <div class="bracket">
-            {% for round in bracket.losers %}
-                <div class="round">
-                    {% for match in round %}
-                        <div class="match">
-                            <div class="match-id">{{ match.match_id }}</div>
-                            {% for pilot in match.pilots %}
-                                {% if pilot %}
-                                    <div class="pilot">{{ pilot.name }}</div>
-                                {% else %}
-                                    <div class="pilot">TBD</div>
-                                {% endif %}
-                            {% endfor %}
-                            {% if match.advance %}
-                                <div class="advance">↑ {{ match.advance[0].name }} {{ match.advance[1].name }}</div>
-                            {% endif %}
-                            {% if match.eliminate %}
-                                <div class="eliminate">✖ {{ match.eliminate[0].name }} {{ match.eliminate[1].name }} eliminated</div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
+  <!-- Winner's Bracket -->
+  <div class="bracket-section">
+    <div class="bracket-title">Winner's Bracket</div>
+    <div class="bracket">
+      <!-- Round 1 -->
+      <div class="round">
+        {% if bracket.current_bracket_race == 1 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3> {{ bracket.winners[0][0].round }}</h3>
+          <div class="player">{{ bracket.winners[0][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][0].pilots[3].name }}<span></span></div>
         </div>
+        {% if bracket.current_bracket_race == 2 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.winners[0][1].round }}</h3>
+          <div class="player">{{ bracket.winners[0][1].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][1].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][1].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][1].pilots[3].name }}<span></span></div>
+        </div>
+        {% if bracket.current_bracket_race == 3 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.winners[0][1].round }}</h3>
+          <div class="player">{{ bracket.winners[0][1].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][1].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][1].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][1].pilots[3].name }}<span></span></div>
+        </div>
+        {% if bracket.current_bracket_race == 4 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.winners[0][3].round }}</h3>
+          <div class="player">{{ bracket.winners[0][3].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][3].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][3].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[0][3].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+      <!-- Round 2 -->
+      <div class="round">
+        {% if bracket.current_bracket_race == 6 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.winners[1][0].round }}</h3>
+          <div class="player">{{ bracket.winners[1][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[1][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[1][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[1][0].pilots[3].name }}<span></span></div>
+        </div>
+        {% if bracket.current_bracket_race == 8 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.winners[1][1].round }}</h3>
+          <div class="player">{{ bracket.winners[1][1].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[1][1].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[1][1].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[1][1].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+      <!-- Round 3 -->
+      <div class="round">
+        {% if bracket.current_bracket_race == 11 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.winners[2][0].round }} Semi-Final</h3>
+          <div class="player">{{ bracket.winners[2][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[2][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[2][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[2][0].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+      <div class="round">
+        {% if bracket.current_bracket_race == 14 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3> {{ bracket.winners[3][0].round }} Finals</h3>
+          <div class="player">{{ bracket.winners[3][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[3][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[3][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.winners[3][0].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Loser's Bracket -->
+  <div class="bracket-section">
+    <div class="bracket-title">Loser's Bracket</div>
+    <div class="bracket">
+      <!-- Loser Round 1 -->
+      <div class="round">
+        {% if bracket.current_bracket_race == 5 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.losers[0][0].round }}</h3>
+          <div class="player">{{ bracket.losers[0][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[0][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[0][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[0][0].pilots[3].name }}<span></span></div>
+        </div>
+        {% if bracket.current_bracket_race == 7 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.losers[0][1].round }}</h3>
+          <div class="player">{{ bracket.losers[0][1].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[0][1].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[0][1].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[0][1].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+      <div class="round">
+      <!-- Loser Round 2 -->
+        {% if bracket.current_bracket_race == 9 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.losers[1][0].round }}</h3>
+          <div class="player">{{ bracket.losers[1][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[1][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[1][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[1][0].pilots[3].name }}<span></span></div>
+        </div>
+        {% if bracket.current_bracket_race == 10 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.losers[1][1].round }}</h3>
+          <div class="player">{{ bracket.losers[1][1].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[1][1].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[1][1].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[1][1].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+      <div class="round">
+        {% if bracket.current_bracket_race == 12 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.losers[2][0].round }}</h3>
+          <div class="player">{{ bracket.losers[2][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[2][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[2][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[2][0].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+      <div class="round">
+        {% if bracket.current_bracket_race == 13 %}
+        <div class="group-last-race-completed">
+        {% else %}
+        <div class="group">
+        {% endif %}
+          <h3>{{ bracket.losers[3][0].round }} Semi-Final</h3>
+          <div class="player">{{ bracket.losers[3][0].pilots[0].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[3][0].pilots[1].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[3][0].pilots[2].name }}<span></span></div>
+          <div class="player">{{ bracket.losers[3][0].pilots[3].name }}<span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
